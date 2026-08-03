@@ -96,9 +96,11 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ jornada: rowToJornada(row) }, { status: 201 });
   } catch (error) {
+    const details = errorDetails(error);
     return NextResponse.json(
       {
-        error: errorDetails(error),
+        error: details.causeMessage ?? details.message,
+        details,
       },
       { status: 500 },
     );

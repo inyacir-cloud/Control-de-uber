@@ -172,8 +172,24 @@ export default function JornadaForm({
         },
       );
       if (!res.ok) {
-        const data = (await res.json().catch(() => ({}))) as { error?: string };
-        throw new Error(data.error ?? "No se pudo guardar la jornada.");
+        const data = (await res.json().catch(() => ({}))) as {
+          error?: unknown;
+          message?: unknown;
+          details?: { message?: unknown; causeMessage?: unknown };
+        };
+
+        const message =
+          typeof data.error === "string"
+            ? data.error
+            : typeof data.message === "string"
+              ? data.message
+              : typeof data.details?.causeMessage === "string"
+                ? data.details.causeMessage
+                : typeof data.details?.message === "string"
+                  ? data.details.message
+                  : "No se pudo guardar la jornada.";
+
+        throw new Error(message);
       }
       setExito(true);
       onSaved();

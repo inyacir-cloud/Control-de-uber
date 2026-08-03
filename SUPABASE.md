@@ -88,6 +88,8 @@ En Vercel, Netlify o tu servidor, define la variable de entorno:
 DATABASE_URL=postgresql://postgres:[PASSWORD]@db.[PROJECT-REF].supabase.co:5432/postgres
 ```
 
+Si Vercel no puede resolver el host directo de Postgres, usa la URL del pooler/connection pooling que te da Supabase en lugar de `db.[PROJECT-REF].supabase.co`.
+
 Luego despliega.
 
 ## 5. Verificar
