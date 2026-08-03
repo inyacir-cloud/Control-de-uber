@@ -1,7 +1,15 @@
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 
-const databaseUrl = process.env.DATABASE_URL;
+const rawDatabaseUrl =
+  process.env.DATABASE_URL ??
+  process.env.POSTGRES_URL ??
+  process.env.SUPABASE_DB_URL ??
+  process.env.SUPABASE_DATABASE_URL;
+
+const databaseUrl = rawDatabaseUrl
+  ? rawDatabaseUrl.trim().replace(/^['"]|['"]$/g, "")
+  : undefined;
 
 export const hasDatabase = Boolean(databaseUrl);
 
