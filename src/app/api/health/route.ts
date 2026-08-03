@@ -3,6 +3,19 @@ import { sql } from "drizzle-orm";
 
 export const dynamic = "force-dynamic";
 
+const errorDetails = (error: unknown) => {
+  if (error instanceof Error) {
+    const cause = error.cause as { message?: string; code?: string } | undefined;
+    return {
+      message: error.message,
+      causeMessage: cause?.message,
+      causeCode: cause?.code,
+    };
+  }
+
+  return { message: "Error desconocido" };
+};
+
 export async function GET() {
   if (!hasDatabase) {
     return Response.json({ ok: false, databaseConfigured: false }, { status: 503 });
@@ -15,7 +28,7 @@ export async function GET() {
     return Response.json(
       {
         ok: false,
-        error: error instanceof Error ? error.message : "Error desconocido",
+        ...errorDetails(error),
       },
       { status: 500 },
     );

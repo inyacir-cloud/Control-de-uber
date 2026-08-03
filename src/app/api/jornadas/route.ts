@@ -7,6 +7,19 @@ import { parseBody, type Payload } from "@/lib/payload";
 
 export const dynamic = "force-dynamic";
 
+const errorDetails = (error: unknown) => {
+  if (error instanceof Error) {
+    const cause = error.cause as { message?: string; code?: string } | undefined;
+    return {
+      message: error.message,
+      causeMessage: cause?.message,
+      causeCode: cause?.code,
+    };
+  }
+
+  return { message: "Error desconocido" };
+};
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -85,7 +98,7 @@ export async function POST(request: Request) {
   } catch (error) {
     return NextResponse.json(
       {
-        error: error instanceof Error ? error.message : "Error desconocido",
+        error: errorDetails(error),
       },
       { status: 500 },
     );
