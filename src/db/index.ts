@@ -11,10 +11,15 @@ const normalizedDatabaseUrl = rawDatabaseUrl
   ? rawDatabaseUrl.trim().replace(/^['"]|['"]$/g, "")
   : undefined;
 
-const isSupabaseUrl = Boolean(normalizedDatabaseUrl?.includes("supabase.co"));
+const isSupabaseUrl = Boolean(
+  normalizedDatabaseUrl?.includes("supabase.co") ||
+    normalizedDatabaseUrl?.includes("supabase.com"),
+);
 
 const databaseUrl = normalizedDatabaseUrl
-  ? normalizedDatabaseUrl.replace(/([?&])sslmode=require(&|$)/i, "$1sslmode=no-verify$2")
+  ? normalizedDatabaseUrl
+      .replace(/([?&])sslmode=[^&]*(&|$)/i, "$1")
+      .replace(/[?&]$/, "")
   : undefined;
 
 export const hasDatabase = Boolean(databaseUrl);
