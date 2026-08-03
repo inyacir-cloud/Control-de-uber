@@ -7,13 +7,19 @@ const rawDatabaseUrl =
   process.env.SUPABASE_DB_URL ??
   process.env.SUPABASE_DATABASE_URL;
 
-const databaseUrl = rawDatabaseUrl
+const normalizedDatabaseUrl = rawDatabaseUrl
   ? rawDatabaseUrl.trim().replace(/^['"]|['"]$/g, "")
+  : undefined;
+
+const isSupabaseUrl = Boolean(normalizedDatabaseUrl?.includes("supabase.co"));
+
+const databaseUrl = normalizedDatabaseUrl
+  ? normalizedDatabaseUrl.replace(/([?&])sslmode=require(&|$)/i, "$1sslmode=no-verify$2")
   : undefined;
 
 export const hasDatabase = Boolean(databaseUrl);
 
-const useSsl = Boolean(databaseUrl?.includes("supabase.co"));
+const useSsl = isSupabaseUrl;
 
 const globalForDb = globalThis as typeof globalThis & {
   __arenaNextJsPostgresqlPool?: Pool;
