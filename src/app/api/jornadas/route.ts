@@ -8,31 +8,47 @@ import { parseBody, type Payload } from "@/lib/payload";
 export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const mes = searchParams.get("mes") ?? "";
+  try {
+    const { searchParams } = new URL(request.url);
+    const mes = searchParams.get("mes") ?? "";
 
-  const rows = await db.select().from(jornadas).orderBy(desc(jornadas.fecha));
-  const todas = calcularTodas(rows.map(rowToJornada));
+    const rows = await db.select().from(jornadas).orderBy(desc(jornadas.fecha));
+    const todas = calcularTodas(rows.map(rowToJornada));
 
-  const meses = Array.from(new Set(todas.map((j) => j.fecha.slice(0, 7)))).sort(
-    (a, b) => b.localeCompare(a),
-  );
+    const meses = Array.from(new Set(todas.map((j) => j.fecha.slice(0, 7)))).sort(
+      (a, b) => b.localeCompare(a),
+    );
 
-  const filtradas =
-    mes && mes !== "todos"
-      ? todas.filter((j) => j.fecha.startsWith(mes))
-      : todas;
+    const filtradas =
+      mes && mes !== "todos"
+        ? todas.filter((j) => j.fecha.startsWith(mes))
+        : todas;
 
-  return NextResponse.json({
-    jornadas: filtradas,
-    resumen: resumir(filtradas),
-    global: resumir(todas),
-    meses,
-    ultimoKmFinal: todas.length > 0 ? todas[0].kmFinal : 0,
-    ultimoSaldo: todas.length > 0 ? todas[0].saldoAcumulado : 0,
-    ultimoRendimiento: todas.length > 0 ? todas[0].rendimientoKmL : 0,
-    ultimoPrecio: todas.length > 0 ? todas[0].precioGasolina : 0,
-  });
+    return NextResponse.json({
+      jornadas: filtradas,
+      resumen: resumir(filtradas),
+      global: resumir(todas),
+      meses,
+      ultimoKmFinal: todas.length > 0 ? todas[0].kmFinal : 0,
+      ultimoSaldo: todas.length > 0 ? todas[0].saldoAcumulado : 0,
+      ultimoRendimiento: todas.length > 0 ? todas[0].rendimientoKmL : 0,
+      ultimoPrecio: todas.length > 0 ? todas[0].precioGasolina : 0,
+    });
+  } catch {
+    return NextResponse.json(
+      {
+        jornadas: [] as never[],
+        resumen: resumir([]),
+        global: resumir([]),
+        meses: [] as string[],
+        ultimoKmFinal: 0,
+        ultimoSaldo: 0,
+        ultimoRendimiento: 0,
+        ultimoPrecio: 0,
+      },
+      { status: 503 },
+    );
+  }
 }
 
 export async function POST(request: Request) {

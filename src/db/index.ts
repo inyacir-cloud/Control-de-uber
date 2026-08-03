@@ -5,6 +5,8 @@ const databaseUrl = process.env.DATABASE_URL;
 
 export const hasDatabase = Boolean(databaseUrl);
 
+const useSsl = Boolean(databaseUrl?.includes("supabase.co"));
+
 const globalForDb = globalThis as typeof globalThis & {
   __arenaNextJsPostgresqlPool?: Pool;
 };
@@ -13,6 +15,7 @@ export const pool = hasDatabase
   ? globalForDb.__arenaNextJsPostgresqlPool ??
     new Pool({
       connectionString: databaseUrl,
+      ssl: useSsl ? { rejectUnauthorized: false } : undefined,
     })
   : null;
 
