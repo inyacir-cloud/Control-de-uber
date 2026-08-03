@@ -1,0 +1,88 @@
+@import "tailwindcss";
+
+/* ── Android-safe, mobile-first resets ─────────────── */
+*,
+*::before,
+*::after {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  overscroll-behavior: none;
+  background: #020617;
+}
+
+body {
+  background:
+    radial-gradient(circle at 10% -10%, rgba(34, 211, 238, 0.22), transparent 32rem),
+    radial-gradient(circle at 110% 5%, rgba(16, 185, 129, 0.18), transparent 28rem),
+    radial-gradient(circle at 50% 105%, rgba(99, 102, 241, 0.16), transparent 30rem),
+    linear-gradient(180deg, #06111f 0%, #020617 45%, #030712 100%);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.28;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: linear-gradient(to bottom, black 0%, transparent 72%);
+}
+
+input[type="number"],
+input[type="date"],
+input[type="text"],
+select {
+  font-size: 16px !important; /* prevent iOS zoom */
+}
+
+/* Hide spinner arrows on number inputs */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Safe area for notch */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .bottom-nav {
+    padding-bottom: calc(env(safe-area-inset-bottom) + 0.75rem);
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(34, 211, 238, 0.25);
+  border-radius: 999px;
+}
+
+@keyframes float-soft {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -6px, 0); }
+}
+
+.float-soft {
+  animation: float-soft 5s ease-in-out infinite;
+}

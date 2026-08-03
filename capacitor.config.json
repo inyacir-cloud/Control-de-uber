@@ -1,0 +1,14 @@
+{
+  "appId": "com.misingresosubercm.app",
+  "appName": "Mis Ingresos Uber",
+  "webDir": "out",
+  "server": {
+    "url": "http://localhost:3000",
+    "cleartext": true
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": true
+    }
+  }
+}

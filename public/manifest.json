@@ -1,0 +1,62 @@
+{
+  "name": "Mis Ingresos Uber - Control Personal",
+  "short_name": "Mis Ingresos",
+  "description": "App para registrar ingresos Uber, efectivo, gasolina y gestionar presupuesto personal con esquema 50/30/20",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#020617",
+  "theme_color": "#020617",
+  "orientation": "portrait-primary",
+  "screenshots": [
+    {
+      "src": "/screenshots/screen-1.png",
+      "sizes": "540x720",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": ["business", "productivity"],
+  "shortcuts": [
+    {
+      "name": "Nueva jornada",
+      "short_name": "Jornada",
+      "description": "Registrar un día de trabajo en Uber",
+      "url": "/?tab=uber&form=true",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Métricas Uber",
+      "short_name": "Métricas",
+      "description": "Ver kilómetros, gasolina y rendimiento",
+      "url": "/",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

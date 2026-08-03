@@ -1,0 +1,131 @@
+╔════════════════════════════════════════════════════════════════════════╗
+║        MIS INGRESOS UBER - INSTRUCCIONES DE DESCARGA RÁPIDAS           ║
+╚════════════════════════════════════════════════════════════════════════╝
+
+📱 OPCIÓN 1: INSTALAR COMO APP WEB (RECOMENDADO)
+═════════════════════════════════════════════════════════════════════════
+
+▶️ EN ANDROID (Chrome, Firefox, Edge, Opera):
+─────────────────────────────────────────────────────────────────────
+
+  1. Abre la app en tu navegador
+  2. Toca el menú ⋮ (3 puntos arriba a la derecha)
+  3. Selecciona "Instalar app" o "Agregar a pantalla de inicio"
+  4. Confirma y ¡listo!
+
+  Resultado: La app aparece en tu pantalla de inicio como app normal
+  Tiempo: 30 segundos
+
+▶️ EN iPHONE (Safari):
+─────────────────────────────────────────────────────────────────────
+
+  1. Abre Safari con la app
+  2. Toca Compartir (cuadro con flecha hacia arriba)
+  3. Desliza hasta "Agregar a la pantalla de inicio"
+  4. Toca "Agregar"
+  5. ¡Listo!
+
+  Resultado: La app aparece en la pantalla de inicio
+  Tiempo: 30 segundos
+
+▶️ EN WINDOWS / MAC / LINUX:
+─────────────────────────────────────────────────────────────────────
+
+  1. Abre Chrome, Firefox o Edge
+  2. Haz clic en el icono de instalación ⬇️ (arriba a la derecha)
+  3. Confirma
+  4. ¡Listo! Se abre como app independiente
+
+  Resultado: App en el menú de aplicaciones
+  Tiempo: 20 segundos
+
+═════════════════════════════════════════════════════════════════════════
+✨ VENTAJAS DE INSTALAR COMO APP WEB
+═════════════════════════════════════════════════════════════════════════
+
+  ✓ SIN Android Studio ni dependencias
+  ✓ Funciona en Android, iPhone, Tablet, PC, Mac
+  ✓ Actualizaciones automáticas
+  ✓ Funciona sin conexión (datos cacheados)
+  ✓ Instalación en 20-30 segundos
+  ✓ ~50 MB de espacio total
+  ✓ Acceso directo desde pantalla de inicio
+  ✓ Interfaz limpia (sin barras del navegador)
+
+═════════════════════════════════════════════════════════════════════════
+📦 OPCIÓN 2: APK NATIVO (SOLO ANDROID - Avanzado)
+═════════════════════════════════════════════════════════════════════════
+
+  Requiere:
+  • Android Studio instalado
+  • JDK 17+
+  • ~10 GB de espacio en disco
+
+  Comando:
+  ./scripts/build-apk.sh
+
+  ⚠️ NO RECOMENDADO: Toma 30+ minutos y requiere compilación.
+     La opción 1 (PWA) es más fácil y versátil.
+
+═════════════════════════════════════════════════════════════════════════
+🎯 NEXT STEPS DESPUÉS DE INSTALAR
+═════════════════════════════════════════════════════════════════════════
+
+  1. Abre la app desde tu pantalla de inicio
+  2. Ve a 🚕 Uber → toca el botón "+" para registrar tu primer día
+  3. Ve a 💰 Finanzas → Semana → escribe tu presupuesto
+  4. Empieza a registrar gastos en la pestaña Movimientos
+
+═════════════════════════════════════════════════════════════════════════
+❓ PREGUNTAS FRECUENTES
+═════════════════════════════════════════════════════════════════════════
+
+P: ¿Necesito Play Store o App Store?
+R: No. La app web se instala directamente en 30 segundos.
+
+P: ¿Funciona sin conexión?
+R: Sí. Los datos se cachean localmente. Se sincroniza al volver a conectar.
+
+P: ¿Dónde están mis datos?
+R: En tu base de datos PostgreSQL privada. No enviamos datos a servidores.
+
+P: ¿Ocupa mucho espacio?
+R: ~50 MB en total. Menos que cualquier app de Play Store.
+
+P: ¿Funciona en mi iPhone?
+R: Sí. Usa Safari y sigue los pasos de "EN iPHONE".
+
+P: ¿Se actualiza automáticamente?
+R: Sí. Cada vez que visitas, descarga la última versión.
+
+═════════════════════════════════════════════════════════════════════════
+🔐 PRIVACIDAD
+═════════════════════════════════════════════════════════════════════════
+
+  ✓ Tus datos NO se envían a servidores externos
+  ✓ Se almacenan localmente y en tu PostgreSQL privada
+  ✓ TÚ controlas dónde alojar la base de datos
+  ✓ Funciona completamente offline
+
+═════════════════════════════════════════════════════════════════════════
+🆘 SOLUCIONAR PROBLEMAS
+═════════════════════════════════════════════════════════════════════════
+
+Problema: La app no aparece el botón de instalar
+Solución: Usa Chrome en lugar de Firefox. Algunos navegadores lo ocultan.
+
+Problema: Los datos no sincronizan
+Solución: Recarga la página (Ctrl+R). Verifica conexión a internet.
+
+Problema: "Error de conexión a base de datos"
+Solución: Verifica que tu servidor PostgreSQL está activo.
+
+Problema: La app funciona pero muy lenta
+Solución: Limpia el cache (Ctrl+Shift+Del). Reinicia la app.
+
+═════════════════════════════════════════════════════════════════════════
+
+¡Listo para empezar! 🚀
+
+Instala en 30 segundos. Empieza a usar en 1 minuto.
+
