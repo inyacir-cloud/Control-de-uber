@@ -126,13 +126,6 @@ export default function App() {
                   compact
                   className="flex h-11 min-w-11 items-center justify-center rounded-2xl border border-cyan-300/40 bg-cyan-300/15 text-lg shadow-lg shadow-cyan-950/20 transition active:scale-95"
                 />
-                <a
-                  href="/descargar"
-                  title="Descargar como app"
-                  className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.08] text-lg shadow-lg shadow-black/20 transition active:scale-95 active:bg-white/[0.12]"
-                >
-                  📱
-                </a>
                 <button
                   onClick={() => {
                     setEditando(null);

@@ -76,18 +76,7 @@ export default function InstallAppButton({
     alert("Si no aparece el botón, usa el menú del navegador y toca 'Instalar app'.");
   }
 
-  if (isStandalone) {
-    return (
-      <span
-        className={
-          className ??
-          "inline-flex items-center gap-2 rounded-xl border border-emerald-400/30 bg-emerald-500/15 px-4 py-2 text-sm font-bold text-emerald-300"
-        }
-      >
-        ✅ App instalada
-      </span>
-    );
-  }
+  if (isStandalone) return null;
 
   return (
     <button
