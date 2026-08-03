@@ -1,9 +1,11 @@
 {
+  "id": "/",
   "name": "Mis Ingresos Uber - Control Personal",
   "short_name": "Mis Ingresos",
   "description": "App para registrar ingresos Uber, efectivo, gasolina y gestionar presupuesto personal con esquema 50/30/20",
   "start_url": "/",
   "scope": "/",
+  "display_override": ["standalone", "minimal-ui", "browser"],
   "display": "standalone",
   "background_color": "#020617",
   "theme_color": "#020617",
@@ -42,6 +44,7 @@
       "purpose": "maskable"
     }
   ],
+  "prefer_related_applications": false,
   "categories": ["business", "productivity"],
   "shortcuts": [
     {

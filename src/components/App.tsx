@@ -16,6 +16,7 @@ import {
 import BottomNav, { type NavItem } from "@/components/BottomNav";
 import { IconBars, IconCard, IconHome } from "@/components/icons";
 import JornadaForm from "@/components/JornadaForm";
+import InstallAppButton from "@/components/InstallAppButton";
 import SemanaNav from "@/components/SemanaNav";
 import TabDashboard from "@/components/TabDashboard";
 import TabMetricas from "@/components/TabMetricas";
@@ -121,6 +122,10 @@ export default function App() {
               </div>
 
               <div className="flex shrink-0 gap-2">
+                <InstallAppButton
+                  compact
+                  className="flex h-11 min-w-11 items-center justify-center rounded-2xl border border-cyan-300/40 bg-cyan-300/15 text-lg shadow-lg shadow-cyan-950/20 transition active:scale-95"
+                />
                 <a
                   href="/descargar"
                   title="Descargar como app"

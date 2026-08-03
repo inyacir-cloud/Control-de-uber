@@ -1,3 +1,5 @@
+import InstallAppButton from "@/components/InstallAppButton";
+
 export default function DescargarPage() {
   return (
     <main className="min-h-dvh bg-gradient-to-b from-slate-950 to-slate-900 px-4 py-8">
@@ -23,6 +25,10 @@ export default function DescargarPage() {
                 Instálala como una app en tu teléfono sin usar Play Store y sin
                 perder tus funciones.
               </p>
+
+              <div className="mt-4">
+                <InstallAppButton className="inline-flex items-center gap-2 rounded-xl bg-emerald-400 px-4 py-3 text-sm font-black text-slate-950 shadow-lg shadow-emerald-950/30 transition active:scale-95" />
+              </div>
 
               <div className="mt-4 space-y-3">
                 <div className="rounded-xl border border-white/10 bg-slate-950/60 p-3">

@@ -1,8 +1,11 @@
-const CACHE_NAME = 'mis-ingresos-uber-v1';
+const CACHE_NAME = 'mis-ingresos-uber-v2';
 const STATIC_ASSETS = [
   '/',
   '/offline.html',
   '/manifest.json',
+  '/icon-192.png',
+  '/icon-512.png',
+  '/apple-touch-icon.png',
 ];
 
 self.addEventListener('install', (event) => {
@@ -43,7 +46,15 @@ self.addEventListener('fetch', (event) => {
   // Otros: cache-first (usa lo cacheado si está disponible)
   event.respondWith(
     caches.match(request).then((response) => {
-      return response || fetch(request);
+      return (
+        response ||
+        fetch(request).catch(() => {
+          if (request.mode === 'navigate') {
+            return caches.match('/offline.html');
+          }
+          return new Response('', { status: 504, statusText: 'Offline' });
+        })
+      );
     })
   );
 });
