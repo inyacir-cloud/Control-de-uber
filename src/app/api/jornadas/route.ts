@@ -71,14 +71,23 @@ export async function POST(request: Request) {
     );
   }
 
-  const [row] = await db
-    .insert(jornadas)
-    .values(parsed.values)
-    .onConflictDoUpdate({
-      target: jornadas.fecha,
-      set: parsed.values,
-    })
-    .returning();
+  try {
+    const [row] = await db
+      .insert(jornadas)
+      .values(parsed.values)
+      .onConflictDoUpdate({
+        target: jornadas.fecha,
+        set: parsed.values,
+      })
+      .returning();
 
-  return NextResponse.json({ jornada: rowToJornada(row) }, { status: 201 });
+    return NextResponse.json({ jornada: rowToJornada(row) }, { status: 201 });
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error: error instanceof Error ? error.message : "Error desconocido",
+      },
+      { status: 500 },
+    );
+  }
 }
