@@ -30,6 +30,13 @@ const hoy = () => {
   return new Date(d.getTime() - off * 60000).toISOString().slice(0, 10);
 };
 
+const ayer = () => {
+  const d = new Date();
+  d.setDate(d.getDate() - 1);
+  const off = d.getTimezoneOffset();
+  return new Date(d.getTime() - off * 60000).toISOString().slice(0, 10);
+};
+
 const vacio = (defaults: Partial<FormState>): FormState => ({
   fecha: hoy(),
   kmInicial: "",
@@ -81,6 +88,7 @@ export default function JornadaForm({
   const [guardando, setGuardando] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [exito, setExito] = useState(false);
+  const [mostrarAvanzado, setMostrarAvanzado] = useState(false);
 
   useEffect(() => {
     if (editando) {
@@ -100,10 +108,12 @@ export default function JornadaForm({
       });
       setAutoEfectivo(editando.efectivoManual === null);
       setPagoRegistrado(editando.retiro > 0);
+      setMostrarAvanzado(true);
     } else {
       setForm(vacio(baseDefaults));
       setAutoEfectivo(true);
       setPagoRegistrado(false);
+      setMostrarAvanzado(false);
     }
     setError(null);
     setExito(false);
@@ -208,6 +218,18 @@ export default function JornadaForm({
         <h2 className="text-base font-black text-white">
           {editando ? `Editar ${editando.fecha}` : "Nueva jornada"}
         </h2>
+        <div className="flex items-center gap-2">
+          <span className="rounded-full border border-emerald-400/30 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-black uppercase tracking-wide text-emerald-300">
+            Captura rápida
+          </span>
+          <button
+            type="button"
+            onClick={() => setMostrarAvanzado((prev) => !prev)}
+            className="rounded-lg border border-white/15 px-2.5 py-1 text-[11px] text-slate-300 active:bg-white/10"
+          >
+            {mostrarAvanzado ? "Ocultar avanzadas" : "Opciones avanzadas"}
+          </button>
+        </div>
         {editando ? (
           <button
             type="button"
@@ -222,13 +244,31 @@ export default function JornadaForm({
       {/* ── Datos básicos ── */}
       <div className="grid grid-cols-2 gap-2.5">
         <Field label="Fecha">
-          <input
-            type="date"
-            required
-            className={inputClass}
-            value={form.fecha}
-            onChange={(e) => set("fecha")(e.target.value)}
-          />
+          <div className="space-y-2">
+            <input
+              type="date"
+              required
+              className={inputClass}
+              value={form.fecha}
+              onChange={(e) => set("fecha")(e.target.value)}
+            />
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => set("fecha")(hoy())}
+                className="rounded-lg border border-white/15 px-2 py-1 text-[10px] font-bold text-slate-300 active:bg-white/10"
+              >
+                Hoy
+              </button>
+              <button
+                type="button"
+                onClick={() => set("fecha")(ayer())}
+                className="rounded-lg border border-white/15 px-2 py-1 text-[10px] font-bold text-slate-300 active:bg-white/10"
+              >
+                Ayer
+              </button>
+            </div>
+          </div>
         </Field>
         <Field label="Total del día" hint="Lo que dice Uber">
           <input
@@ -239,6 +279,7 @@ export default function JornadaForm({
             className={inputClass}
             value={form.totalUber}
             onChange={(e) => set("totalUber")(e.target.value)}
+            autoFocus={!editando}
           />
         </Field>
       </div>
@@ -269,28 +310,32 @@ export default function JornadaForm({
               onChange={(e) => set("kmFinal")(e.target.value)}
             />
           </Field>
-          <Field label="km por litro" hint="Rendimiento">
-            <input
-              type="number"
-              step="0.01"
-              inputMode="decimal"
-              placeholder="ej. 14.5"
-              className={inputClass}
-              value={form.rendimientoKmL}
-              onChange={(e) => set("rendimientoKmL")(e.target.value)}
-            />
-          </Field>
-          <Field label="Precio litro" hint="$ por litro">
-            <input
-              type="number"
-              step="0.01"
-              inputMode="decimal"
-              placeholder="ej. 23.90"
-              className={inputClass}
-              value={form.precioGasolina}
-              onChange={(e) => set("precioGasolina")(e.target.value)}
-            />
-          </Field>
+          {mostrarAvanzado ? (
+            <>
+              <Field label="km por litro" hint="Rendimiento">
+                <input
+                  type="number"
+                  step="0.01"
+                  inputMode="decimal"
+                  placeholder="ej. 14.5"
+                  className={inputClass}
+                  value={form.rendimientoKmL}
+                  onChange={(e) => set("rendimientoKmL")(e.target.value)}
+                />
+              </Field>
+              <Field label="Precio litro" hint="$ por litro">
+                <input
+                  type="number"
+                  step="0.01"
+                  inputMode="decimal"
+                  placeholder="ej. 23.90"
+                  className={inputClass}
+                  value={form.precioGasolina}
+                  onChange={(e) => set("precioGasolina")(e.target.value)}
+                />
+              </Field>
+            </>
+          ) : null}
         </div>
       </div>
 
@@ -455,27 +500,29 @@ export default function JornadaForm({
       </div>
 
       {/* ── Extras ── */}
-      <div className="grid grid-cols-2 gap-2.5">
-        <Field label="Otros gastos" hint="Casetas…">
-          <input
-            type="number"
-            step="0.01"
-            inputMode="decimal"
-            className={inputClass}
-            value={form.otrosGastos}
-            onChange={(e) => set("otrosGastos")(e.target.value)}
-          />
-        </Field>
-        <Field label="Notas">
-          <input
-            type="text"
-            placeholder="Opcional"
-            className={inputClass}
-            value={form.notas}
-            onChange={(e) => set("notas")(e.target.value)}
-          />
-        </Field>
-      </div>
+      {mostrarAvanzado ? (
+        <div className="grid grid-cols-2 gap-2.5">
+          <Field label="Otros gastos" hint="Casetas…">
+            <input
+              type="number"
+              step="0.01"
+              inputMode="decimal"
+              className={inputClass}
+              value={form.otrosGastos}
+              onChange={(e) => set("otrosGastos")(e.target.value)}
+            />
+          </Field>
+          <Field label="Notas">
+            <input
+              type="text"
+              placeholder="Opcional"
+              className={inputClass}
+              value={form.notas}
+              onChange={(e) => set("notas")(e.target.value)}
+            />
+          </Field>
+        </div>
+      ) : null}
 
       {/* ── Vista previa compacta ── */}
       <div className="grid grid-cols-4 gap-2">
