@@ -381,49 +381,126 @@ export default function JornadaForm({
           </Field>
         </div>
 
-        {/* ── Pago registrado ── */}
-        <div className="mt-3">
-          <button
-            type="button"
-            onClick={() => {
-              const next = !pagoRegistrado;
-              setPagoRegistrado(next);
-              if (next) {
-                setForm((prev) => ({ ...prev, retiro: String(acumuladoSemana) }));
-              } else {
-                setForm((prev) => ({ ...prev, retiro: "0" }));
-              }
-            }}
-            className={`w-full rounded-2xl border p-3 text-left transition active:scale-[0.98] ${
-              pagoRegistrado
-                ? "border-violet-400/40 bg-violet-500/15 shadow-lg shadow-violet-950/20"
-                : "border-white/10 bg-slate-950/50"
-            }`}
-          >
-            <div className="flex items-center gap-3">
-              <div
-                className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-xl border-2 transition ${
+        {mostrarAvanzado ? (
+          <>
+            {/* ── Pago registrado ── */}
+            <div className="mt-3">
+              <button
+                type="button"
+                onClick={() => {
+                  const next = !pagoRegistrado;
+                  setPagoRegistrado(next);
+                  if (next) {
+                    setForm((prev) => ({ ...prev, retiro: String(acumuladoSemana) }));
+                  } else {
+                    setForm((prev) => ({ ...prev, retiro: "0" }));
+                  }
+                }}
+                className={`w-full rounded-2xl border p-3 text-left transition active:scale-[0.98] ${
                   pagoRegistrado
-                    ? "border-violet-400 bg-violet-500 text-white"
-                    : "border-white/20 bg-transparent"
+                    ? "border-violet-400/40 bg-violet-500/15 shadow-lg shadow-violet-950/20"
+                    : "border-white/10 bg-slate-950/50"
                 }`}
               >
-                {pagoRegistrado ? "✓" : ""}
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className={`text-sm font-black ${pagoRegistrado ? "text-violet-300" : "text-slate-300"}`}>
-                  💳 Pago registrado
-                </p>
-                <p className="text-[10px] text-slate-500">
-                  {pagoRegistrado
-                    ? `Uber depositó ${money(acumuladoSemana)} a tu cuenta`
-                    : "Marca esto cuando Uber te deposite el saldo acumulado"}
-                </p>
-              </div>
-            </div>
-          </button>
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-xl border-2 transition ${
+                      pagoRegistrado
+                        ? "border-violet-400 bg-violet-500 text-white"
+                        : "border-white/20 bg-transparent"
+                    }`}
+                  >
+                    {pagoRegistrado ? "✓" : ""}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className={`text-sm font-black ${pagoRegistrado ? "text-violet-300" : "text-slate-300"}`}>
+                      💳 Pago registrado
+                    </p>
+                    <p className="text-[10px] text-slate-500">
+                      {pagoRegistrado
+                        ? `Uber depositó ${money(acumuladoSemana)} a tu cuenta`
+                        : "Marca esto cuando Uber te deposite el saldo acumulado"}
+                    </p>
+                  </div>
+                </div>
+              </button>
 
-        </div>
+              {/* Input manual solo si NO está registrado como pago */}
+              {!pagoRegistrado ? (
+                <div className="mt-2.5">
+                  <Field label="Depósito recibido" hint="Si te depositaron algo, ponlo aquí">
+                    <input
+                      type="number"
+                      step="0.01"
+                      inputMode="decimal"
+                      placeholder="0.00"
+                      className={inputClass}
+                      value={form.retiro}
+                      onChange={(e) => set("retiro")(e.target.value)}
+                    />
+                  </Field>
+                </div>
+              ) : null}
+            </div>
+
+            {/* Desglose visual del cálculo */}
+            {autoEfectivo ? (
+              <div className="mt-3 rounded-2xl border border-white/10 bg-slate-950/50 p-3">
+                <div className="space-y-2 text-[11px]">
+                  <div className="flex justify-between text-slate-400">
+                    <span>Ganancia del día (Uber)</span>
+                    <span className="font-bold tabular-nums text-white">{money(preview.totalUber)}</span>
+                  </div>
+                  <div className="flex justify-between text-slate-400">
+                    <span>Saldo ayer → hoy</span>
+                    <span className="tabular-nums text-cyan-300">
+                      {money(saldoPrevio)} → {money(preview.saldoAcumulado)}
+                    </span>
+                  </div>
+                  {retiroEfectivo > 0 ? (
+                    <div className="flex justify-between text-slate-400">
+                      <span>{pagoRegistrado ? "💳 Pago registrado" : "Depósito recibido"}</span>
+                      <span className="tabular-nums text-violet-300">{money(retiroEfectivo)}</span>
+                    </div>
+                  ) : null}
+                  <div className="flex justify-between border-t border-white/10 pt-2 text-slate-300">
+                    <span>Fue al saldo hoy</span>
+                    <span className="font-bold tabular-nums text-cyan-300">{money(preview.deltaSaldo)}</span>
+                  </div>
+                  <div className="flex justify-between text-slate-300">
+                    <span>Efectivo que te quedaste</span>
+                    <span className="text-sm font-black tabular-nums text-emerald-400">
+                      {money(preview.efectivo)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="mt-3 rounded-2xl border border-white/10 bg-slate-950/40 p-3">
+                <Field label="Efectivo que te quedaste">
+                  <input
+                    type="number"
+                    step="0.01"
+                    inputMode="decimal"
+                    className={inputClass}
+                    value={form.efectivoManual}
+                    onChange={(e) => set("efectivoManual")(e.target.value)}
+                  />
+                </Field>
+              </div>
+            )}
+
+            <label className="mt-2.5 flex items-center gap-2 text-xs text-slate-400">
+              <input
+                type="checkbox"
+                checked={autoEfectivo}
+                onChange={(e) => setAutoEfectivo(e.target.checked)}
+                className="h-3.5 w-3.5 accent-emerald-400"
+              />
+              Calcular efectivo automáticamente
+            </label>
+          </>
+        ) : null}
       </div>
 
       {/* ── Extras ── */}
