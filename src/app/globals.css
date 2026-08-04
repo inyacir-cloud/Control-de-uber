@@ -11,9 +11,11 @@ html {
   -webkit-text-size-adjust: 100%;
   overscroll-behavior: none;
   background: #020617;
+  height: 100%;
 }
 
 body {
+  min-height: 100%;
   background:
     radial-gradient(circle at 10% -10%, rgba(34, 211, 238, 0.22), transparent 32rem),
     radial-gradient(circle at 110% 5%, rgba(16, 185, 129, 0.18), transparent 28rem),
@@ -39,6 +41,11 @@ input[type="date"],
 input[type="text"],
 select {
   font-size: 16px !important; /* prevent iOS zoom */
+}
+
+a,
+button {
+  touch-action: manipulation;
 }
 
 /* Hide spinner arrows on number inputs */
@@ -85,4 +92,8 @@ input[type="number"] {
 
 .float-soft {
   animation: float-soft 5s ease-in-out infinite;
+}
+
+.safe-top {
+  padding-top: max(0.5rem, env(safe-area-inset-top));
 }

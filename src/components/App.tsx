@@ -17,6 +17,7 @@ import BottomNav, { type NavItem } from "@/components/BottomNav";
 import { IconBars, IconCard, IconHome } from "@/components/icons";
 import JornadaForm from "@/components/JornadaForm";
 import InstallAppButton from "@/components/InstallAppButton";
+import PwaMobileStatus from "@/components/PwaMobileStatus";
 import SemanaNav from "@/components/SemanaNav";
 import TabDashboard from "@/components/TabDashboard";
 import TabMetricas from "@/components/TabMetricas";
@@ -99,6 +100,7 @@ export default function App() {
 
   return (
     <div className="relative min-h-dvh overflow-hidden">
+      <PwaMobileStatus />
       <div className="pointer-events-none fixed left-1/2 top-4 h-44 w-44 -translate-x-1/2 rounded-full bg-cyan-400/10 blur-3xl" />
 
       <header className="sticky top-0 z-40 px-3 pt-3 backdrop-blur-xl">

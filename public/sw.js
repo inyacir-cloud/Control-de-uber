@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mis-ingresos-uber-v3';
+const CACHE_NAME = 'mis-ingresos-uber-v4';
 const STATIC_ASSETS = [
   '/offline.html',
   '/manifest.json',
@@ -16,6 +16,12 @@ self.addEventListener('install', (event) => {
       });
     })
   );
+});
+
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
 
 self.addEventListener('fetch', (event) => {

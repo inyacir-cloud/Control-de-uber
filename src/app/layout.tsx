@@ -45,15 +45,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           content="black-translucent"
         />
         <meta name="apple-mobile-web-app-title" content="Uber Control" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('/sw.js').catch(() => {});
-              }
-            `,
-          }}
-        />
       </head>
       <body className="min-h-dvh bg-slate-950 text-slate-100 antialiased overscroll-none pb-28 sm:pb-8">
         {children}
