@@ -100,7 +100,8 @@ export function calcularJornada(
     ? jornada.totalUber - deltaSaldo
     : (jornada.efectivoManual as number);
   const gastosTotales = costoGasolina + jornada.otrosGastos;
-  const gananciaNeta = jornada.totalUber - gastosTotales;
+  // La gasolina se reporta solo como métrica informativa; no se descuenta de la ganancia.
+  const gananciaNeta = jornada.totalUber - jornada.otrosGastos;
 
   return {
     ...jornada,
@@ -143,7 +144,7 @@ export function resumir(items: JornadaCalculada[]): Resumen {
   const litros = sum((j) => j.litros);
   const costoGasolina = sum((j) => j.costoGasolina);
   const otrosGastos = sum((j) => j.otrosGastos);
-  const gananciaNeta = totalUber - costoGasolina - otrosGastos;
+  const gananciaNeta = totalUber - otrosGastos;
   // items viene ordenado de más nuevo a más viejo
   const saldoActual = items.length > 0 ? items[0].saldoAcumulado : 0;
 
