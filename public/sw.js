@@ -1,6 +1,5 @@
-const CACHE_NAME = 'mis-ingresos-uber-v2';
+const CACHE_NAME = 'mis-ingresos-uber-v3';
 const STATIC_ASSETS = [
-  '/',
   '/offline.html',
   '/manifest.json',
   '/icon-192.png',
@@ -9,6 +8,7 @@ const STATIC_ASSETS = [
 ];
 
 self.addEventListener('install', (event) => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(STATIC_ASSETS).catch(() => {
@@ -43,30 +43,58 @@ self.addEventListener('fetch', (event) => {
     );
   }
 
-  // Otros: cache-first (usa lo cacheado si está disponible)
-  event.respondWith(
-    caches.match(request).then((response) => {
-      return (
-        response ||
-        fetch(request).catch(() => {
-          if (request.mode === 'navigate') {
-            return caches.match('/offline.html');
-          }
-          return new Response('', { status: 504, statusText: 'Offline' });
+  // Navegación HTML: siempre intenta red para evitar ver versiones viejas.
+  if (request.mode === 'navigate') {
+    return event.respondWith(
+      fetch(request)
+        .then((response) => {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(request, copy).catch(() => {});
+          });
+          return response;
         })
-      );
+        .catch(async () => {
+          const cachedPage = await caches.match(request);
+          if (cachedPage) return cachedPage;
+          return caches.match('/offline.html');
+        })
+    );
+  }
+
+  // Otros assets: cache-first con actualización en segundo plano.
+  event.respondWith(
+    caches.match(request).then((cached) => {
+      const fetchPromise = fetch(request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const copy = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(request, copy).catch(() => {});
+            });
+          }
+          return networkResponse;
+        })
+        .catch(() => {
+          return new Response('', { status: 504, statusText: 'Offline' });
+        });
+
+      return cached || fetchPromise;
     })
   );
 });
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames
-          .filter((name) => name !== CACHE_NAME)
-          .map((name) => caches.delete(name))
-      );
-    })
+    Promise.all([
+      caches.keys().then((cacheNames) => {
+        return Promise.all(
+          cacheNames
+            .filter((name) => name !== CACHE_NAME)
+            .map((name) => caches.delete(name))
+        );
+      }),
+      self.clients.claim(),
+    ])
   );
 });
